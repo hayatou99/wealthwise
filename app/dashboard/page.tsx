@@ -9,6 +9,7 @@ import AddAccountModal from '@/components/accounts/AddAccountModal'
 import AccountRow from '@/components/accounts/AccountRow'
 import NetWorthChart from '@/components/dashboard/NetWorthChart'
 import AIInsights from '@/components/dashboard/AIInsights'
+import ConnectBankButton from '@/components/accounts/ConnectBankButton'
 import { createClient } from '@/lib/supabase'
 
 export default function DashboardPage() {
@@ -47,8 +48,8 @@ export default function DashboardPage() {
 
   const tabs = [
     { id: 'overview', label: 'Overview' },
-    { id: 'assets', label: `Assets (${assets.length})` },
-    { id: 'liabilities', label: `Liabilities (${liabs.length})` },
+    { id: 'assets', label: 'Assets (' + assets.length + ')' },
+    { id: 'liabilities', label: 'Liabilities (' + liabs.length + ')' },
     { id: 'history', label: 'History' },
   ] as const
 
@@ -72,7 +73,8 @@ export default function DashboardPage() {
             <span className="font-semibold text-gray-900">Wealthwise</span>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="ghost" size="sm" onClick={handleSnapshot} loading={snapshotting}>📸 Snapshot</Button>
+            {userId && <ConnectBankButton userId={userId} />}
+            <Button variant="ghost" size="sm" onClick={handleSnapshot} loading={snapshotting}>Snapshot</Button>
             <Button size="sm" onClick={() => setAddOpen(true)}>+ Add</Button>
           </div>
         </div>
@@ -83,8 +85,8 @@ export default function DashboardPage() {
           <p className="text-sm text-gray-400 mb-1">Total net worth</p>
           <p className="text-4xl font-bold text-gray-900 mb-1">{formatCurrency(nw)}</p>
           {change !== null && (
-            <p className={`text-sm font-medium ${change >= 0 ? 'text-emerald-600' : 'text-red-500'}`}>
-              {change >= 0 ? '▲' : '▼'} {formatCurrency(Math.abs(change))} ({changePct?.toFixed(1)}%) vs last snapshot
+            <p className={change >= 0 ? 'text-sm font-medium text-emerald-600' : 'text-sm font-medium text-red-500'}>
+              {change >= 0 ? 'up' : 'down'} {formatCurrency(Math.abs(change))} vs last snapshot
             </p>
           )}
         </Card>
@@ -97,7 +99,7 @@ export default function DashboardPage() {
         <div className="flex gap-1 bg-gray-100 p-1 rounded-2xl">
           {tabs.map(t => (
             <button key={t.id} onClick={() => setActiveTab(t.id)}
-              className={`flex-1 text-xs font-medium py-2 px-1 rounded-xl transition-all ${activeTab === t.id ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500'}`}>
+              className={t.id === activeTab ? 'flex-1 text-xs font-medium py-2 px-1 rounded-xl bg-white text-gray-900 shadow-sm' : 'flex-1 text-xs font-medium py-2 px-1 rounded-xl text-gray-500'}>
               {t.label}
             </button>
           ))}
@@ -108,19 +110,23 @@ export default function DashboardPage() {
             <Card>
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-sm font-semibold text-gray-900">Assets</h2>
-                <button onClick={() => setAddOpen(true)} className="text-xs text-gray-400 hover:text-gray-600">+ Add</button>
+                <button onClick={() => setAddOpen(true)} className="text-xs text-gray-400 hover:text-gray-600">+ Add manually</button>
               </div>
-              {assets.length ? assets.map(a => <AccountRow key={a.id} account={a} />) : <EmptyState icon="📦" title="No assets yet" description="Add your first asset to start tracking." />}
+              {assets.length ? assets.map(a => <AccountRow key={a.id} account={a} />) : (
+                <EmptyState icon="📦" title="No assets yet" description="Connect your bank or add manually." />
+              )}
             </Card>
             <Card>
               <div className="flex items-center justify-between mb-3">
                 <h2 className="text-sm font-semibold text-gray-900">Liabilities</h2>
-                <button onClick={() => setAddOpen(true)} className="text-xs text-gray-400 hover:text-gray-600">+ Add</button>
+                <button onClick={() => setAddOpen(true)} className="text-xs text-gray-400 hover:text-gray-600">+ Add manually</button>
               </div>
-              {liabs.length ? liabs.map(a => <AccountRow key={a.id} account={a} />) : <EmptyState icon="🎉" title="No liabilities" description="Debt-free! Or add loans, mortgages, credit cards." />}
+              {liabs.length ? liabs.map(a => <AccountRow key={a.id} account={a} />) : (
+                <EmptyState icon="🎉" title="No liabilities" description="Debt-free! Or add loans, mortgages, credit cards." />
+              )}
             </Card>
             <Card>
-              <h2 className="text-sm font-semibold text-gray-900 mb-3">💡 Insights</h2>
+              <h2 className="text-sm font-semibold text-gray-900 mb-3">Insights</h2>
               <AIInsights accounts={accounts} netWorth={nw} />
             </Card>
           </div>
@@ -132,7 +138,10 @@ export default function DashboardPage() {
               <h2 className="text-sm font-semibold text-gray-900">All assets</h2>
               <Button size="sm" variant="ghost" onClick={() => setAddOpen(true)}>+ Add</Button>
             </div>
-            {assets.length ? assets.map(a => <AccountRow key={a.id} account={a} />) : <EmptyState icon="📦" title="No assets yet" description="Add bank accounts, investments, and more." action={<Button size="sm" onClick={() => setAddOpen(true)}>Add first asset</Button>} />}
+            {assets.length ? assets.map(a => <AccountRow key={a.id} account={a} />) : (
+              <EmptyState icon="📦" title="No assets yet" description="Connect your bank or add manually."
+                action={<Button size="sm" onClick={() => setAddOpen(true)}>Add manually</Button>} />
+            )}
           </Card>
         )}
 
@@ -142,7 +151,10 @@ export default function DashboardPage() {
               <h2 className="text-sm font-semibold text-gray-900">All liabilities</h2>
               <Button size="sm" variant="ghost" onClick={() => setAddOpen(true)}>+ Add</Button>
             </div>
-            {liabs.length ? liabs.map(a => <AccountRow key={a.id} account={a} />) : <EmptyState icon="🎉" title="No liabilities" description="Add mortgages, loans, and credit cards." action={<Button size="sm" onClick={() => setAddOpen(true)}>Add liability</Button>} />}
+            {liabs.length ? liabs.map(a => <AccountRow key={a.id} account={a} />) : (
+              <EmptyState icon="🎉" title="No liabilities" description="Add mortgages, loans, and credit cards."
+                action={<Button size="sm" onClick={() => setAddOpen(true)}>Add liability</Button>} />
+            )}
           </Card>
         )}
 
@@ -150,11 +162,11 @@ export default function DashboardPage() {
           <Card>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-sm font-semibold text-gray-900">Net worth over time</h2>
-              <Button size="sm" variant="secondary" onClick={handleSnapshot} loading={snapshotting}>📸 Snapshot</Button>
+              <Button size="sm" variant="secondary" onClick={handleSnapshot} loading={snapshotting}>Snapshot</Button>
             </div>
             <NetWorthChart snapshots={snapshots} />
             {snapshots.length > 0 && (
-              <div className="mt-4 space-y-0">
+              <div className="mt-4">
                 {[...snapshots].reverse().slice(0, 6).map(s => (
                   <div key={s.id} className="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
                     <span className="text-sm text-gray-500">{new Date(s.snapshot_date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
