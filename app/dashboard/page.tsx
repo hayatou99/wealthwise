@@ -10,6 +10,7 @@ import AccountRow from '@/components/accounts/AccountRow'
 import NetWorthChart from '@/components/dashboard/NetWorthChart'
 import AIInsights from '@/components/dashboard/AIInsights'
 import ConnectBankButton from '@/components/accounts/ConnectBankButton'
+import { ThemeToggle } from '@/components/ui/ThemeToggle'
 import { createClient } from '@/lib/supabase'
 
 export default function DashboardPage() {
@@ -63,17 +64,18 @@ export default function DashboardPage() {
   )
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 sticky top-0 z-10">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-10">
         <div className="max-w-2xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 bg-gray-900 rounded-lg flex items-center justify-center">
               <span className="text-white text-xs font-bold">W</span>
             </div>
-            <span className="font-semibold text-gray-900">Wealthwise</span>
+            <span className="font-semibold text-gray-900 dark:text-white">Wealthwise</span>
           </div>
           <div className="flex items-center gap-2">
-            {userId && <ConnectBankButton userId={userId} />}
+            {userId {userId && <ConnectBankButton userId={userId} />}{userId && <ConnectBankButton userId={userId} />} <ConnectBankButton userId={userId} />}
+            <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={handleSnapshot} loading={snapshotting}>Snapshot</Button>
             <Button size="sm" onClick={() => setAddOpen(true)}>+ Add</Button>
           </div>
