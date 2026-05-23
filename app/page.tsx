@@ -95,7 +95,7 @@ export default function LandingPage() {
           </div>
           <span className="text-sm text-gray-500">Wealthwise</span>
         </div>
-        <p className="text-sm text-gray-400">Simple, private, free.</p>
+        <div className="flex items-center gap-4"><a href="/privacy" className="text-sm text-gray-400 hover:text-gray-600">Privacy</a><a href="/terms" className="text-sm text-gray-400 hover:text-gray-600">Terms</a><p className="text-sm text-gray-400">Simple, private, free.</p></div>
       </footer>
     </div>
   )
