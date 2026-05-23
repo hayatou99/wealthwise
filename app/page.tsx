@@ -22,7 +22,7 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="max-w-3xl mx-auto px-6 pt-20 pb-24 text-center">
         <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
-          ✨ Free forever. No ads. No upsells.
+          ✨ Free. No ads. No upsells.
         </div>
         <h1 className="text-5xl font-bold text-gray-900 leading-tight mb-6">
           Know your exact<br />net worth today
@@ -34,11 +34,8 @@ export default function LandingPage() {
           <Link href="/auth" className="bg-gray-900 text-white px-8 py-3.5 rounded-2xl text-base font-medium hover:bg-gray-700 transition-all active:scale-95">
             Start tracking free →
           </Link>
-          <Link href="/auth" className="bg-gray-100 text-gray-900 px-8 py-3.5 rounded-2xl text-base font-medium hover:bg-gray-200 transition-all">
-            See demo
-          </Link>
         </div>
-        <p className="text-sm text-gray-400 mt-4">No credit card required · Takes 2 minutes</p>
+        <p className="text-sm text-gray-400 mt-4">No credit card required</p>
       </section>
 
       {/* Features */}
@@ -58,7 +55,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Social proof */}
+      {/* Stats */}
       <section className="bg-gray-50 py-20">
         <div className="max-w-3xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-4">Built for young professionals</h2>
@@ -78,38 +75,15 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Comparison */}
-      <section className="max-w-3xl mx-auto px-6 py-24">
-        <h2 className="text-3xl font-bold text-gray-900 text-center mb-12">Why not just use Empower or Monarch?</h2>
-        <div className="space-y-4">
-          {[
-            { them: 'Empower pushes wealth management upsells constantly', us: 'Wealthwise is just a tracker. No upsells ever.' },
-            { them: 'Monarch costs $99/year', us: 'Wealthwise is free to start' },
-            { them: 'Complex dashboards built for investors', us: 'Clean and simple — built for people just starting out' },
-          ].map((row, i) => (
-            <div key={i} className="grid grid-cols-2 gap-4">
-              <div className="bg-red-50 rounded-2xl p-4 flex items-start gap-3">
-                <span className="text-red-400 mt-0.5">✕</span>
-                <p className="text-sm text-red-700">{row.them}</p>
-              </div>
-              <div className="bg-emerald-50 rounded-2xl p-4 flex items-start gap-3">
-                <span className="text-emerald-500 mt-0.5">✓</span>
-                <p className="text-sm text-emerald-700">{row.us}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* CTA */}
       <section className="bg-gray-900 py-20">
         <div className="max-w-2xl mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold text-white mb-4">Ready to know your net worth?</h2>
-          <p className="text-gray-400 mb-8">Join thousands of young professionals taking control of their finances.</p>
+          <p className="text-gray-400 mb-8">Join young professionals taking control of their finances.</p>
           <Link href="/auth" className="inline-flex items-center bg-white text-gray-900 px-8 py-3.5 rounded-2xl text-base font-medium hover:bg-gray-100 transition-all active:scale-95">
             Get started free →
           </Link>
-          <p className="text-gray-500 text-sm mt-4">No credit card · 2 minute setup · Free forever</p>
+          <p className="text-gray-500 text-sm mt-4">No credit card required</p>
         </div>
       </section>
 
