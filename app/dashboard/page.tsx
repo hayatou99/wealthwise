@@ -55,7 +55,7 @@ export default function DashboardPage() {
   ] as const
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
       <div className="flex flex-col items-center gap-3">
         <div className="w-8 h-8 border-2 border-gray-900 border-t-transparent rounded-full animate-spin" />
         <p className="text-sm text-gray-500">Loading your finances...</p>
@@ -74,7 +74,7 @@ export default function DashboardPage() {
             <span className="font-semibold text-gray-900 dark:text-white">Wealthwise</span>
           </div>
           <div className="flex items-center gap-2">
-            {userId {userId && <ConnectBankButton userId={userId} />}{userId && <ConnectBankButton userId={userId} />} <ConnectBankButton userId={userId} />}
+            {userId && <ConnectBankButton userId={userId} />}
             <ThemeToggle />
             <Button variant="ghost" size="sm" onClick={handleSnapshot} loading={snapshotting}>Snapshot</Button>
             <Button size="sm" onClick={() => setAddOpen(true)}>+ Add</Button>
@@ -85,10 +85,10 @@ export default function DashboardPage() {
       <main className="max-w-2xl mx-auto px-4 py-6 space-y-5">
         <Card>
           <p className="text-sm text-gray-400 mb-1">Total net worth</p>
-          <p className="text-4xl font-bold text-gray-900 mb-1">{formatCurrency(nw)}</p>
+          <p className="text-4xl font-bold text-gray-900 dark:text-white mb-1">{formatCurrency(nw)}</p>
           {change !== null && (
             <p className={change >= 0 ? 'text-sm font-medium text-emerald-600' : 'text-sm font-medium text-red-500'}>
-              {change >= 0 ? 'up' : 'down'} {formatCurrency(Math.abs(change))} vs last snapshot
+              {change >= 0 ? '▲' : '▼'} {formatCurrency(Math.abs(change))} vs last snapshot
             </p>
           )}
         </Card>
@@ -98,10 +98,12 @@ export default function DashboardPage() {
           <StatCard label="Total liabilities" value={formatCurrency(totalLiabilities(), true)} />
         </div>
 
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-2xl">
+        <div className="flex gap-1 bg-gray-100 dark:bg-gray-800 p-1 rounded-2xl">
           {tabs.map(t => (
             <button key={t.id} onClick={() => setActiveTab(t.id)}
-              className={t.id === activeTab ? 'flex-1 text-xs font-medium py-2 px-1 rounded-xl bg-white text-gray-900 shadow-sm' : 'flex-1 text-xs font-medium py-2 px-1 rounded-xl text-gray-500'}>
+              className={t.id === activeTab
+                ? 'flex-1 text-xs font-medium py-2 px-1 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                : 'flex-1 text-xs font-medium py-2 px-1 rounded-xl text-gray-500 dark:text-gray-400'}>
               {t.label}
             </button>
           ))}
@@ -111,7 +113,7 @@ export default function DashboardPage() {
           <div className="space-y-4">
             <Card>
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-sm font-semibold text-gray-900">Assets</h2>
+                <h2 className="text-sm font-semibold text-gray-900 dark:text-white">Assets</h2>
                 <button onClick={() => setAddOpen(true)} className="text-xs text-gray-400 hover:text-gray-600">+ Add manually</button>
               </div>
               {assets.length ? assets.map(a => <AccountRow key={a.id} account={a} />) : (
@@ -120,7 +122,7 @@ export default function DashboardPage() {
             </Card>
             <Card>
               <div className="flex items-center justify-between mb-3">
-                <h2 className="text-sm font-semibold text-gray-900">Liabilities</h2>
+                <h2 className="text-sm font-semibold text-gray-900 dark:text-white">Liabilities</h2>
                 <button onClick={() => setAddOpen(true)} className="text-xs text-gray-400 hover:text-gray-600">+ Add manually</button>
               </div>
               {liabs.length ? liabs.map(a => <AccountRow key={a.id} account={a} />) : (
@@ -128,7 +130,7 @@ export default function DashboardPage() {
               )}
             </Card>
             <Card>
-              <h2 className="text-sm font-semibold text-gray-900 mb-3">Insights</h2>
+              <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Insights</h2>
               <AIInsights accounts={accounts} netWorth={nw} />
             </Card>
           </div>
@@ -137,7 +139,7 @@ export default function DashboardPage() {
         {activeTab === 'assets' && (
           <Card>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-gray-900">All assets</h2>
+              <h2 className="text-sm font-semibold text-gray-900 dark:text-white">All assets</h2>
               <Button size="sm" variant="ghost" onClick={() => setAddOpen(true)}>+ Add</Button>
             </div>
             {assets.length ? assets.map(a => <AccountRow key={a.id} account={a} />) : (
@@ -150,7 +152,7 @@ export default function DashboardPage() {
         {activeTab === 'liabilities' && (
           <Card>
             <div className="flex items-center justify-between mb-3">
-              <h2 className="text-sm font-semibold text-gray-900">All liabilities</h2>
+              <h2 className="text-sm font-semibold text-gray-900 dark:text-white">All liabilities</h2>
               <Button size="sm" variant="ghost" onClick={() => setAddOpen(true)}>+ Add</Button>
             </div>
             {liabs.length ? liabs.map(a => <AccountRow key={a.id} account={a} />) : (
@@ -163,16 +165,16 @@ export default function DashboardPage() {
         {activeTab === 'history' && (
           <Card>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-sm font-semibold text-gray-900">Net worth over time</h2>
+              <h2 className="text-sm font-semibold text-gray-900 dark:text-white">Net worth over time</h2>
               <Button size="sm" variant="secondary" onClick={handleSnapshot} loading={snapshotting}>Snapshot</Button>
             </div>
             <NetWorthChart snapshots={snapshots} />
             {snapshots.length > 0 && (
               <div className="mt-4">
                 {[...snapshots].reverse().slice(0, 6).map(s => (
-                  <div key={s.id} className="flex justify-between items-center py-2 border-b border-gray-50 last:border-0">
+                  <div key={s.id} className="flex justify-between items-center py-2 border-b border-gray-50 dark:border-gray-800 last:border-0">
                     <span className="text-sm text-gray-500">{new Date(s.snapshot_date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</span>
-                    <span className="text-sm font-semibold text-gray-900">{formatCurrency(s.net_worth)}</span>
+                    <span className="text-sm font-semibold text-gray-900 dark:text-white">{formatCurrency(s.net_worth)}</span>
                   </div>
                 ))}
               </div>
